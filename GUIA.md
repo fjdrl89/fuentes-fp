@@ -36,10 +36,33 @@ una nota o como referencia, no para el seguimiento diario.
 **Calendario** muestra el rol de guardias del mes, con filtro por iniciales y registro
 de cambios de guardia entre dos personas.
 
+**Una barra fija te dice en qué paso vas.** Se queda pegada arriba mientras recorres la
+ronda, con ‹ y › para moverte, el botón *Abrir* y el de *Candidata* a un clic. Sirve sobre
+todo cuando abres los sitios en pestañas y pierdes el hilo de dónde ibas.
+
 **Al abrir, se marca solo.** Cada vez que abres un paso queda registrado como revisado y
 el contador salta al siguiente. **Abrir siguiente** hace ambas cosas de un clic;
 **Abrir pendientes** abre de golpe todos los que falten. La casilla ✓ sirve para corregir
 a mano y todo **se reinicia solo cada día**.
+
+## El cierre del día
+
+Al terminar la ronda aparece **Cierre del día** (también está siempre disponible desde el
+botón del mismo nombre). Reúne todo lo que marcaste como candidata, con su liga y tu
+apunte, y desde ahí lo **copias**, lo **descargas en Markdown** o lo **envías por correo**
+con un clic.
+
+En esa misma pantalla está el **prompt para tu IA**: arma el encargo con las fuentes de hoy,
+tus apuntes y las reglas de redacción completas, en cinco variantes —general, acción de
+calificación, comunicado o cifras oficiales, mañanera o evento, y cobertura de medios—.
+Lo copias y lo pegas en Claude, ChatGPT o Gemini; los botones de cada uno copian el prompt
+y abren la página.
+
+**El sitio no consulta ninguna IA por ti**, y es a propósito: una página web no puede leer
+el contenido de otra, y buena parte de la ronda —Pemex, CFE, las calificadoras— rechaza
+lectores automáticos. Por eso, cuando entre tus candidatas hay fuentes de ese tipo, el sitio
+**te avisa cuáles son y qué material tendrás que pegarle** al modelo, y el prompt le ordena
+detenerse en vez de suponer.
 
 ## Qué puedes hacer
 
@@ -73,6 +96,10 @@ La primera vez hay que permitir las ventanas emergentes del sitio.
 **Exportar.** El botón ↓ baja los resultados filtrados en CSV, con todos sus campos.
 
 **Favoritos.** La estrella guarda una fuente y el botón ★ del encabezado las filtra.
+
+**Ayuda.** El botón **?** del encabezado abre tres apartados: cómo funciona el sitio, un
+recordatorio rápido de las reglas de redacción —fórmula de apertura, tabla de modalidad,
+cifras, muletillas prohibidas, traducciones fijas— y las preguntas frecuentes.
 
 **Modo oscuro e instalación.** El botón ☾ del encabezado cambia el tema y recuerda tu
 elección. Desde el navegador puedes instalar el sitio como app, con icono propio,

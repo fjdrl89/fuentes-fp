@@ -27,6 +27,7 @@
   --muted: #56616e;      /* texto secundario: cumple 4.5:1 en todos los fondos claros */
   --clay-text: #a0452d;  /* clay legible como texto (el clay puro se queda en bordes) */
   --gold-text: #755609;  /* dorado legible como texto */
+  --green-text: #256349;  /* verde legible sobre --green-soft */
   --surface: #ffffff;    /* superficie de tarjetas y controles */
   --clay: #b4543a;
   --clay-soft: #f8e2da;
@@ -2063,7 +2064,7 @@ dialog::backdrop {
 
 .outcome-badge.reported {
   background: var(--green-soft);
-  color: #226047;
+  color: var(--green-text);
 }
 
 .outcome-row {
@@ -2713,6 +2714,7 @@ dialog::backdrop {
   --muted: #a3b0be;
   --clay-text: #e5947a;
   --gold-text: #edcb87;
+  --green-text: #7ed3ae;
   --green-soft: #143126;
   --shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
 }
@@ -3026,7 +3028,7 @@ dialog::backdrop {
 }
 
 .calendar-cell.today .calendar-day {
-  color: #8a6410;
+  color: var(--gold-text);
   font-weight: 800;
 }
 
@@ -3207,6 +3209,390 @@ dialog::backdrop {
 
 
 
+/* ---------- Navegador de pasos, cierre del día, prompt y ayuda ---------- */
+
+/* La barra se queda pegada arriba para que siempre sepas en qué paso vas.
+   Ningún ancestro puede llevar overflow oculto o el sticky deja de funcionar. */
+.step-nav {
+  position: sticky;
+  top: 10px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: 0 10px 30px rgba(11, 30, 51, 0.12);
+  padding: 10px 12px;
+}
+
+.step-nav.done {
+  border-color: var(--green);
+}
+
+.step-nav-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.step-nav-label {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.step-nav-body strong {
+  display: block;
+  overflow: hidden;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-nav-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.step-nav-actions .active {
+  border-color: var(--green-text);
+  background: var(--green-soft);
+  color: var(--green-text);
+}
+
+.step-nav button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.step.current {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px rgba(20, 48, 79, 0.12);
+}
+
+.round-complete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 18px 0 0;
+  border: 1px solid var(--green);
+  border-radius: var(--radius-md);
+  background: var(--green-soft);
+  padding: 14px 18px;
+}
+
+.round-complete strong {
+  display: block;
+  font-size: 15px;
+}
+
+.round-complete span {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* ---- cierre del día ---- */
+
+.close-scoreboard {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.close-group + .close-group {
+  margin-top: 18px;
+}
+
+.close-group h3 {
+  margin: 0 0 9px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.close-item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 14px;
+}
+
+.close-item + .close-item {
+  margin-top: 9px;
+}
+
+.close-item-plain {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.close-index {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-content: center;
+  border-radius: 9px;
+  background: var(--gold);
+  color: var(--navy-deep);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.close-item h4 {
+  margin: 0 0 3px;
+  color: var(--white);
+  font-size: 14.5px;
+}
+
+.close-item a {
+  display: block;
+  overflow: hidden;
+  color: var(--gold);
+  font-size: 12px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.close-item a:hover {
+  text-decoration: underline;
+}
+
+.close-item p {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+}
+
+.close-item .close-nonote,
+.close-item .close-nolink {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ---- prompt ---- */
+
+.prompt-block {
+  margin-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: 16px;
+}
+
+.prompt-head h3 {
+  margin: 0 0 3px;
+  color: var(--white);
+  font-size: 16px;
+}
+
+.prompt-head p {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 12.5px;
+  max-width: 68ch;
+}
+
+.prompt-variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.prompt-variants button {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: transparent;
+  padding: 6px 13px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.prompt-variants button:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.prompt-variants button.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+
+.prompt-hint {
+  margin: 9px 0 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+}
+
+.prompt-warning {
+  margin-top: 12px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(233, 185, 73, 0.13);
+  padding: 11px 14px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12.5px;
+}
+
+.prompt-warning ul {
+  margin: 7px 0;
+  padding-left: 18px;
+}
+
+.prompt-warning li + li {
+  margin-top: 3px;
+}
+
+.prompt-warning p {
+  margin: 7px 0 0;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.prompt-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.prompt-open-label {
+  margin-left: 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11.5px;
+  font-weight: 750;
+}
+
+.prompt-preview {
+  width: 100%;
+  margin-top: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.28);
+  padding: 12px 14px;
+  color: rgba(255, 255, 255, 0.86);
+  font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+/* ---- ayuda ---- */
+
+.help-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.help-tabs button {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: transparent;
+  padding: 6px 14px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.help-tabs button.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+
+.help-group + .help-group {
+  margin-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 16px;
+}
+
+.help-group h3 {
+  margin: 0 0 7px;
+  color: var(--gold);
+  font-size: 14.5px;
+}
+
+.help-group p {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 13.2px;
+  line-height: 1.55;
+  max-width: 76ch;
+}
+
+.help-group p:last-child {
+  margin-bottom: 0;
+}
+
+.help-group strong {
+  color: var(--white);
+}
+
+.help-quote {
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 10px 14px;
+}
+
+.help-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4px 0 10px;
+  font-size: 12.5px;
+}
+
+.help-table th,
+.help-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 9px 5px 0;
+  color: rgba(255, 255, 255, 0.84);
+  text-align: left;
+}
+
+.help-table th {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 860px) {
+  .step-nav {
+    flex-wrap: wrap;
+    top: 6px;
+  }
+
+  .step-nav-body {
+    order: -1;
+    flex-basis: 100%;
+  }
+
+  .step-nav-actions {
+    flex: 1 1 auto;
+  }
+
+  .prompt-open-label {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
+
     </style>
 
     <link rel="manifest" href="manifest.webmanifest" />
@@ -3244,6 +3630,9 @@ dialog::backdrop {
             <span aria-hidden="true">⚑</span>
             Incidencias
             <span class="count-badge" id="reportsCount">0</span>
+          </button>
+          <button class="button button-ghost" id="helpButton" type="button" title="Ayuda y preguntas frecuentes" aria-label="Ayuda">
+            <span aria-hidden="true">?</span>
           </button>
           <button class="button button-ghost" id="themeToggle" type="button" title="Cambiar entre claro y oscuro" aria-label="Cambiar tema">
             <span aria-hidden="true" id="themeIcon">☾</span>
@@ -3412,6 +3801,7 @@ dialog::backdrop {
           <div class="round-view-actions">
             <button class="button button-primary button-small" id="roundOpenNext" type="button">Abrir siguiente</button>
             <button class="button button-outline button-small" id="roundOpenPending" type="button">Abrir pendientes</button>
+            <button class="button button-outline button-small" id="roundCloseDay" type="button">Cierre del día</button>
             <button class="button button-outline button-small" id="roundResetTop" type="button">Reiniciar el día</button>
           </div>
         </div>
@@ -3424,8 +3814,32 @@ dialog::backdrop {
           </label>
         </div>
 
+        <!-- Barra fija: dice en qué paso vas sin tener que buscarlo en la lista.
+             El botón de candidata es la MISMA etiqueta de la ficha, solo que a un clic. -->
+        <div class="step-nav" id="stepNav" aria-label="Paso actual de la ronda">
+          <button class="icon-button" id="stepNavPrev" type="button" aria-label="Paso anterior">‹</button>
+          <div class="step-nav-body">
+            <span class="step-nav-label" id="stepNavLabel">Paso — de —</span>
+            <strong id="stepNavName">—</strong>
+          </div>
+          <div class="step-nav-actions">
+            <a class="button button-primary button-small" id="stepNavOpen" href="#" target="_blank" rel="noopener noreferrer">Abrir ↗</a>
+            <button class="button button-outline button-small" id="stepNavCandidate" type="button" aria-pressed="false">◔ Candidata</button>
+            <button class="button button-outline button-small" id="stepNavNote" type="button">Nota</button>
+          </div>
+          <button class="icon-button" id="stepNavNext" type="button" aria-label="Paso siguiente">›</button>
+        </div>
+
         <ol class="step-list" id="stepList"></ol>
         <p class="step-empty" id="stepEmpty" hidden>Ronda completa por hoy. Desmarca la casilla de arriba para volver a verla.</p>
+
+        <div class="round-complete" id="roundComplete" hidden>
+          <div>
+            <strong>Ronda completa.</strong>
+            <span id="roundCompleteDetail">Revisaste todos los pasos de hoy.</span>
+          </div>
+          <button class="button button-primary button-small" id="roundCompleteClose" type="button">Ver el cierre del día</button>
+        </div>
 
         <section class="news-block" aria-labelledby="newsTitle">
           <div class="news-head">
@@ -3645,6 +4059,75 @@ dialog::backdrop {
           </div>
         </div>
         <div class="panel-scroll" id="roundList"></div>
+      </div>
+    </dialog>
+
+    <dialog class="panel-dialog" id="closeDialog">
+      <div class="panel-body">
+        <div class="dialog-head reports-head">
+          <div>
+            <p class="eyebrow">Fin del recorrido</p>
+            <h2>Cierre del día</h2>
+            <p>Lo que marcaste como candidata, con su liga y tu apunte, listo para copiar o enviar.</p>
+          </div>
+          <button class="dialog-close dialog-close-light" type="button" data-close="closeDialog" aria-label="Cerrar">×</button>
+        </div>
+        <div class="reports-actions">
+          <span class="close-scoreboard" id="closeScoreboard"></span>
+          <div class="toolbar-actions">
+            <button class="button button-outline-light button-small" id="closeCopy" type="button">Copiar</button>
+            <button class="button button-outline-light button-small" id="closeExport" type="button">Descargar .md</button>
+            <button class="button button-light button-small" id="closeEmail" type="button">Enviar por correo</button>
+          </div>
+        </div>
+        <div class="log-general">
+          <label for="closeGeneral">Valoración general del día</label>
+          <textarea id="closeGeneral" rows="3" placeholder="Escribe aquí la valoración general del día…"></textarea>
+        </div>
+        <div class="panel-scroll" id="closeList"></div>
+
+        <div class="prompt-block">
+          <div class="prompt-head">
+            <div>
+              <h3>Prompt para tu IA</h3>
+              <p>Arma el encargo con las fuentes de hoy y las reglas de redacción. El sitio no consulta ninguna IA: tú lo pegas donde prefieras.</p>
+            </div>
+          </div>
+          <div class="prompt-variants" id="promptVariants" role="group" aria-label="Tipo de nota"></div>
+          <p class="prompt-hint" id="promptHint"></p>
+          <div class="prompt-warning" id="promptWarning" hidden></div>
+          <div class="prompt-actions">
+            <button class="button button-light button-small" id="promptCopy" type="button">Copiar prompt</button>
+            <button class="button button-outline-light button-small" id="promptPreview" type="button">Ver el prompt</button>
+            <button class="button button-outline-light button-small" id="promptDownload" type="button">Descargar .md</button>
+            <span class="prompt-open-label">Copiar y abrir:</span>
+            <button class="button button-outline-light button-small" data-ia="https://claude.ai/new" type="button">Claude</button>
+            <button class="button button-outline-light button-small" data-ia="https://chatgpt.com/" type="button">ChatGPT</button>
+            <button class="button button-outline-light button-small" data-ia="https://gemini.google.com/app" type="button">Gemini</button>
+          </div>
+          <textarea class="prompt-preview" id="promptText" rows="12" readonly hidden></textarea>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="panel-dialog" id="helpDialog">
+      <div class="panel-body">
+        <div class="dialog-head reports-head">
+          <div>
+            <p class="eyebrow">Ayuda</p>
+            <h2>Cómo se usa y preguntas frecuentes</h2>
+            <p>Lo esencial del sitio y un recordatorio rápido de las reglas de redacción.</p>
+          </div>
+          <button class="dialog-close dialog-close-light" type="button" data-close="helpDialog" aria-label="Cerrar">×</button>
+        </div>
+        <div class="reports-actions">
+          <div class="help-tabs" id="helpTabs" role="tablist">
+            <button type="button" class="active" data-help="sitio" role="tab" aria-selected="true">El sitio</button>
+            <button type="button" data-help="redaccion" role="tab" aria-selected="false">Recordatorio de redacción</button>
+            <button type="button" data-help="dudas" role="tab" aria-selected="false">Preguntas frecuentes</button>
+          </div>
+        </div>
+        <div class="panel-scroll help-scroll" id="helpContent"></div>
       </div>
     </dialog>
 
@@ -12944,6 +13427,26 @@ window.FP_DATA = [
   const contactoIncidencias = "javier.delrio.licea@gmail.com";
 
   /**
+   * Contexto institucional que viaja dentro del prompt para la IA.
+   * Está aislado aquí a propósito: scripts/generar_version_publica.mjs
+   * sustituye estas dos líneas por texto neutral en el sitio publicado.
+   */
+  const notaContexto = {
+    area: "análisis macroeconómico",
+    lector: "la alta dirección",
+  };
+
+  /**
+   * Sitios que no se pueden leer de forma automática. No es una suposición:
+   * el verificador de enlaces recibe 403 de todos ellos. Si una fuente de estas
+   * queda seleccionada, el prompt le pide a la persona que adjunte el material.
+   */
+  const dominiosCerrados = [
+    "pemex.com", "app.cfe.mx", "cfe.gob.mx", "bmv.com.mx",
+    "fitchratings.com", "spglobal.com", "moodys.com", "hrratings.com",
+  ];
+
+  /**
    * Rol de guardias.
    *
    * Regla deducida del calendario de agosto de 2026 y verificada contra él:
@@ -13072,6 +13575,36 @@ window.FP_DATA = [
     blockRow: $("#blockRow"),
     hideDoneMain: $("#hideDoneMain"),
     stepEmpty: $("#stepEmpty"),
+    stepNav: $("#stepNav"),
+    stepNavPrev: $("#stepNavPrev"),
+    stepNavNext: $("#stepNavNext"),
+    stepNavLabel: $("#stepNavLabel"),
+    stepNavName: $("#stepNavName"),
+    stepNavOpen: $("#stepNavOpen"),
+    stepNavCandidate: $("#stepNavCandidate"),
+    stepNavNote: $("#stepNavNote"),
+    roundComplete: $("#roundComplete"),
+    roundCompleteDetail: $("#roundCompleteDetail"),
+    roundCompleteClose: $("#roundCompleteClose"),
+    roundCloseDay: $("#roundCloseDay"),
+    closeDialog: $("#closeDialog"),
+    closeScoreboard: $("#closeScoreboard"),
+    closeGeneral: $("#closeGeneral"),
+    closeList: $("#closeList"),
+    closeCopy: $("#closeCopy"),
+    closeExport: $("#closeExport"),
+    closeEmail: $("#closeEmail"),
+    promptVariants: $("#promptVariants"),
+    promptHint: $("#promptHint"),
+    promptWarning: $("#promptWarning"),
+    promptCopy: $("#promptCopy"),
+    promptPreview: $("#promptPreview"),
+    promptDownload: $("#promptDownload"),
+    promptText: $("#promptText"),
+    helpButton: $("#helpButton"),
+    helpDialog: $("#helpDialog"),
+    helpTabs: $("#helpTabs"),
+    helpContent: $("#helpContent"),
     themeToggle: $("#themeToggle"),
     themeIcon: $("#themeIcon"),
     toggleStats: $("#toggleStats"),
@@ -13679,6 +14212,594 @@ window.FP_DATA = [
     return roundSteps.filter((record) => !checked.has(record.url));
   }
 
+  /* ---------- navegador de pasos ---------- */
+
+  /**
+   * Paso en el que va la persona. Arranca en el primer pendiente y se mueve solo
+   * al abrir una fuente, de modo que la barra siempre refleje dónde estás.
+   */
+  let currentStep = 0;
+  /** Mientras nadie se mueva a mano, la barra sigue al primer pendiente. */
+  let interacted = false;
+
+  function currentRecord() {
+    return roundSteps[currentStep] ?? null;
+  }
+
+  function setCurrentStep(index, { scroll = false } = {}) {
+    if (!roundSteps.length) return;
+    interacted = true;
+    currentStep = Math.min(Math.max(index, 0), roundSteps.length - 1);
+    renderStepNav();
+    if (!scroll) return;
+    const record = currentRecord();
+    const node = record && elements.stepList.querySelector(`[data-id="${record.id}"]`);
+    const li = node?.closest("li.step");
+    if (li) li.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function focusStepFor(record) {
+    const index = roundSteps.findIndex((item) => item.url === record.url);
+    if (index >= 0) setCurrentStep(index);
+  }
+
+  /** Al abrir una fuente la barra se mueve a ella: refleja dónde vas de verdad. */
+  function trackOpened(record) {
+    if (Number.isFinite(record.roundOrder)) focusStepFor(record);
+  }
+
+  function renderStepNav() {
+    if (!elements.stepNav) return;
+    const record = currentRecord();
+    if (!record) {
+      elements.stepNav.hidden = true;
+      return;
+    }
+    elements.stepNav.hidden = false;
+    elements.stepNavLabel.textContent = `Paso ${record.roundOrder} de ${roundSteps.length}`;
+    elements.stepNavName.textContent = record.name;
+    elements.stepNav.classList.toggle("done", checked.has(record.url));
+    elements.stepNavPrev.disabled = currentStep === 0;
+    elements.stepNavNext.disabled = currentStep === roundSteps.length - 1;
+
+    const linkable = isLink(record);
+    elements.stepNavOpen.hidden = !linkable;
+    if (linkable) elements.stepNavOpen.href = record.url;
+
+    const outcome = outcomeFor(record.url);
+    const activa = outcome.candidate || outcome.reported;
+    elements.stepNavCandidate.setAttribute("aria-pressed", String(activa));
+    elements.stepNavCandidate.classList.toggle("active", activa);
+    elements.stepNavCandidate.textContent = outcome.reported
+      ? "✓ Entró en la nota"
+      : outcome.candidate
+        ? "✓ Candidata"
+        : "◔ Candidata";
+    // Marcar como reportada es decisión posterior; desde aquí solo se alterna candidata.
+    elements.stepNavCandidate.disabled = outcome.reported;
+    elements.stepNavCandidate.title = outcome.reported
+      ? "Ya está marcada como que entró en la nota final. Se cambia desde la ficha."
+      : "Marca esta fuente como candidata para la nota de hoy";
+
+    // El paso actual se resalta en la lista.
+    elements.stepList.querySelectorAll("li.step.current").forEach((li) => li.classList.remove("current"));
+    const node = elements.stepList.querySelector(`[data-id="${record.id}"]`);
+    node?.closest("li.step")?.classList.add("current");
+  }
+
+  /* ---------- cierre del día ---------- */
+
+  /** Fuentes marcadas como candidatas (o ya reportadas) en la fecha de hoy. */
+  function closingCandidates() {
+    return roundSteps
+      .concat(data.filter((record) => !Number.isFinite(record.roundOrder)))
+      .filter((record) => {
+        const outcome = outcomeFor(record.url);
+        return outcome.candidate || outcome.reported;
+      });
+  }
+
+  /** Apuntes del día en fuentes que no se marcaron como candidatas: no se pierden. */
+  function closingOtherNotes() {
+    const entry = logStore[today] ?? { notes: {} };
+    return Object.entries(entry.notes ?? {})
+      .filter(([url, text]) => {
+        if (!text || !text.trim()) return false;
+        const outcome = outcomeFor(url);
+        return !outcome.candidate && !outcome.reported;
+      })
+      .map(([url, text]) => ({ record: recordsByUrl.get(url), url, text }));
+  }
+
+  /* ---------- ayuda y preguntas frecuentes ---------- */
+
+  let promptVariant = "general";
+  let helpTab = "sitio";
+
+  const AYUDA = {
+    sitio: `
+      <div class="help-group">
+        <h3>La ronda del día</h3>
+        <p>La portada trae el recorrido fijo en orden. <strong>Abrir un paso ya lo marca como revisado</strong> y el contador salta al siguiente: no hace falta palomear a mano. La casilla ✓ está para corregir cuando abriste algo por error o revisaste una fuente por fuera.</p>
+        <p>La barra que se queda pegada arriba te dice en qué paso vas. Con ‹ y › te mueves sin perder el hilo, y el botón <strong>Candidata</strong> marca la fuente desde ahí mismo.</p>
+        <p><strong>Abrir pendientes</strong> abre de golpe todo lo que falte. La primera vez el navegador pedirá permiso para ventanas emergentes: hay que dárselo o solo se abrirá una.</p>
+        <p>Todo <strong>se reinicia solo al cambiar el día</strong>. No hay que limpiar nada.</p>
+      </div>
+      <div class="help-group">
+        <h3>Las dos etiquetas</h3>
+        <p><strong>Candidata para la nota</strong> se marca durante la revisión: encontraste algo que podría ameritar nota. <strong>Entró en la nota final</strong> se marca después, cuando ya sabes qué se reportó.</p>
+        <p>Son dos momentos distintos a propósito. Con el tiempo esa diferencia dice qué fuentes proponen mucho y reportan poco, y cuáles casi siempre aciertan.</p>
+      </div>
+      <div class="help-group">
+        <h3>El cierre del día</h3>
+        <p>Al terminar el recorrido aparece <strong>Cierre del día</strong>: reúne lo que marcaste como candidata con su liga y tu apunte. Desde ahí lo copias, lo descargas o lo envías por correo, y también armas el prompt para tu IA.</p>
+      </div>
+      <div class="help-group">
+        <h3>Dónde se guarda todo</h3>
+        <p>En tu navegador, no en un servidor. Nadie más ve tu avance ni tus notas, y tú no ves los de nadie. Si limpias los datos del navegador se pierden: <strong>exporta la bitácora antes de cerrar</strong> si te importa conservarla.</p>
+      </div>
+      <div class="help-group">
+        <h3>Si un enlace no sirve</h3>
+        <p>Usa <strong>Reportar</strong> en la ficha. Desde el panel de Incidencias lo copias o lo mandas por correo ya redactado. Además, cada lunes una revisión automática comprueba todas las direcciones del catálogo.</p>
+      </div>`,
+
+    redaccion: `
+      <div class="help-group">
+        <h3>La fórmula de apertura</h3>
+        <p>Toda nota abre igual, completa en negritas:</p>
+        <p class="help-quote"><strong>Únicamente para tu información (Fuente). Qué pasó, quién lo hizo y la magnitud o el sentido.</strong></p>
+        <p>Punto después de la fuente, <strong>no dos puntos</strong>. El hecho principal va en la primera oración. Si la nota es delicada, el matiz central va desde la apertura.</p>
+      </div>
+      <div class="help-group">
+        <h3>Las dos secciones, siempre</h3>
+        <p><em>Noticias relevantes sobre el sector financiero:</em> y <em>Noticias relevantes sobre el sector público:</em> van las dos aunque una quede vacía. En ese caso la línea es exactamente <em>No hay noticias que reportar.</em> — sin variantes. La numeración se reinicia en cada sección.</p>
+      </div>
+      <div class="help-group">
+        <h3>No subir la intensidad</h3>
+        <table class="help-table">
+          <tr><th>En la fuente</th><th>En la nota</th><th>Nunca</th></tr>
+          <tr><td>could / may</td><td>podría</td><td>hará</td></tr>
+          <tr><td>likely</td><td>probablemente</td><td>con certeza</td></tr>
+          <tr><td>expects</td><td>espera, prevé</td><td>asegura</td></tr>
+          <tr><td>downside risk</td><td>riesgo a la baja</td><td>deterioro confirmado</td></tr>
+          <tr><td>negative outlook</td><td>perspectiva negativa</td><td>reducción inminente</td></tr>
+        </table>
+        <p>Todo juicio o proyección va atribuido: «la calificadora prevé», «de acuerdo con la SHCP», «en opinión de S&amp;P». Nunca «prevemos».</p>
+      </div>
+      <div class="help-group">
+        <h3>Cifras</h3>
+        <p>Punto decimal, coma de miles: 3.9%, 304,400 millones de pesos. <strong>m.m.p.</strong> miles de millones de pesos · <strong>m.d.d.</strong> millones de dólares · <strong>m.m.d.</strong> miles de millones de dólares · <strong>v.r.a.</strong> variación real anual · <strong>p.p.</strong> puntos porcentuales.</p>
+        <p><strong>Puntos del PIB</strong> para razones respecto al PIB; <strong>puntos porcentuales</strong> para tasas. Jamás «puntos porcentuales del PIB». Fechas sin cero inicial: «5 de febrero».</p>
+      </div>
+      <div class="help-group">
+        <h3>Lo que se cae solo en la revisión</h3>
+        <p>Raya larga o semirraya · «Adicionalmente» · «En este sentido» · «Es importante destacar que» · «lo cual se traduce en» · «en aras de» · «dicho / referido / el citado» · «mismo» como pronombre · gerundios al inicio de oración.</p>
+        <p>«Cabe destacar que», «si bien» y «por otro lado»: máximo una vez cada uno por nota.</p>
+      </div>
+      <div class="help-group">
+        <h3>Traducciones que no se reinventan</h3>
+        <p><em>outlook</em> → perspectiva · <em>investment grade</em> → grado de inversión · <em>downgrade</em> → reducción de la calificación (no «degradación») · <em>fiscal consolidation</em> → consolidación fiscal (no «ajuste fiscal») · <em>debt burden</em> → carga de la deuda · <em>debt affordability</em> → asequibilidad de la deuda · <em>baseline credit assessment</em> → calificación base · <em>standalone credit profile</em> → perfil crediticio individual · <em>nearshoring</em> se queda en cursiva.</p>
+      </div>`,
+
+    dudas: `
+      <div class="help-group">
+        <h3>Abrí un sitio por error y quedó marcado. ¿Se arregla?</h3>
+        <p>Sí. La casilla ✓ del paso lo desmarca. El contador se recalcula al instante.</p>
+      </div>
+      <div class="help-group">
+        <h3>Le di a «Abrir pendientes» y solo se abrió una pestaña.</h3>
+        <p>Es el bloqueador de ventanas emergentes del navegador. En la barra de direcciones aparece un aviso: permite las ventanas emergentes de este sitio y vuelve a intentarlo.</p>
+      </div>
+      <div class="help-group">
+        <h3>¿Puedo ver lo que marcaron los demás?</h3>
+        <p>No. Cada quien tiene su propio avance en su navegador, sin servidor de por medio. Para compartir, se exporta desde la bitácora o desde el cierre del día.</p>
+      </div>
+      <div class="help-group">
+        <h3>¿Por qué el sitio no consulta la IA por mí?</h3>
+        <p>Por dos razones. Una página web no puede leer el contenido de otra —el navegador lo impide—, y para que un modelo escriba haría falta una llave de API, que en una página pública quedaría a la vista de cualquiera. Además, buena parte de la ronda —Pemex, CFE, las calificadoras— rechaza lectores automáticos, así que el resultado tendría huecos invisibles. El sitio arma el encargo; tú lo pegas donde prefieras y le das el material que no puede abrir.</p>
+      </div>
+      <div class="help-group">
+        <h3>El prompt me pide adjuntar cosas. ¿Por qué?</h3>
+        <p>Porque esas fuentes están tras muro de pago, piden contraseña, bloquean robots o son video. El prompt las nombra una por una y le ordena al modelo detenerse en vez de inventar. Es deliberado: más vale una nota incompleta que una inventada.</p>
+      </div>
+      <div class="help-group">
+        <h3>¿Se puede usar sin internet?</h3>
+        <p>El directorio sí, si lo instalaste como app: la lista y tu avance funcionan sin conexión. Las fuentes, evidentemente, no.</p>
+      </div>
+      <div class="help-group">
+        <h3>Cambié de computadora y no veo mi historial.</h3>
+        <p>El historial vive en el navegador donde lo capturaste. No viaja solo. Para moverlo, exporta el dataset desde la bitácora antes de cambiar de equipo.</p>
+      </div>
+      <div class="help-group">
+        <h3>Encontré un sitio que debería estar en el catálogo.</h3>
+        <p>Mándalo por correo con el botón de Incidencias, describiendo cuál es y por qué conviene. El catálogo se actualiza y se vuelve a publicar.</p>
+      </div>`,
+  };
+
+  function renderHelp() {
+    elements.helpContent.innerHTML = AYUDA[helpTab] ?? "";
+    elements.helpTabs.querySelectorAll("button").forEach((button) => {
+      const activo = button.dataset.help === helpTab;
+      button.classList.toggle("active", activo);
+      button.setAttribute("aria-selected", String(activo));
+    });
+  }
+
+  function openHelp(tab) {
+    if (tab) helpTab = tab;
+    renderHelp();
+    if (!elements.helpDialog.open) elements.helpDialog.showModal();
+  }
+
+  /**
+   * Variantes del prompt. Comparten las fuentes y las reglas generales; cada una
+   * añade la plantilla que corresponde a ese tipo de nota, tomada de la guía.
+   */
+  const PROMPTS = [
+    {
+      id: "general",
+      etiqueta: "General",
+      pie: "Sirve para cualquier revisión: tú decides qué amerita nota.",
+      encargo:
+        "propón las notas del día sobre el sector financiero y el sector público. Decide primero qué material amerita nota según los criterios de materialidad y descarta lo demás explicándome por qué.",
+      plantilla: "",
+    },
+    {
+      id: "calificacion",
+      etiqueta: "Acción de calificación",
+      pie: "Moody's, S&P, Fitch, HR: soberano, Pemex, CFE o banca de desarrollo.",
+      encargo:
+        "redacta la nota de la acción de calificación. Mantente muy cerca de la redacción del comunicado y no agregues diagnósticos propios sobre sostenibilidad, crecimiento o política fiscal.",
+      plantilla: `### Plantilla de acción de calificación
+
+- Apertura con: agencia, fecha, tipo de acción, nivel anterior y nuevo, perspectiva anterior y nueva, y el matiz sobre grado de inversión si aplica.
+- Línea de transición: "**Mensajes principales del comunicado:**".
+- Sub-viñetas en este orden, si aplican: **Fundamentos de la calificación.** **Justificación de la perspectiva.** **Consolidación fiscal y deuda.** **Postura fiscal.** **Pemex.** / **CFE.** **Inversión y crecimiento.** **Balance de riesgos.**
+- Si es Pemex, CFE o banca de desarrollo: vincula explícitamente la acción con la calificación soberana cuando el comunicado lo establezca, y aclara la calificación base (*baseline credit assessment, BCA*) o el perfil crediticio individual si la fuente lo incluye.
+
+Ejemplo del registro exacto que busco:
+
+"**Únicamente para tu información (Moody's Ratings). Ayer 20 de mayo, la agencia calificadora Moody's Ratings redujo la calificación crediticia de largo plazo de la deuda de México de Baa2 a Baa3 y cambió la perspectiva a estable desde negativa. La nueva calificación otorgada a México se ubica todavía en el grado de inversión, si bien es el último nivel en esta categoría.**"`,
+    },
+    {
+      id: "comunicado",
+      etiqueta: "Comunicado o cifras oficiales",
+      pie: "SHCP, SAT, INEGI, Banxico, Pemex, CFE, organismos internacionales.",
+      encargo:
+        "redacta la nota a partir del comunicado o de las cifras oficiales. Distingue de forma consistente entre observado, aprobado, estimado y calendario, y no mezcles métricas de la dependencia con métricas de calificadoras sin señalarlo.",
+      plantilla: `### Plantilla de comunicado o cifras oficiales
+
+- Apertura con el hecho principal y su magnitud. Para finanzas públicas: "Resultados de Finanzas Públicas a [mes] de [año]."
+- "**Mensajes principales**": de tres a cinco viñetas con los balances clave, la magnitud de la consolidación y la comparación contra metas.
+- Si hay cifras fiscales, organiza en este orden: balances del sector público en porcentaje del PIB → ingresos presupuestarios con variación real anual y composición → gasto presupuestario distinguiendo programable y no programable → fondos de estabilización si hubo movimiento relevante.
+- Señala dónde convendría un cuadro y qué columnas llevaría, sin inventar cifras que no estén en la fuente.`,
+    },
+    {
+      id: "matutina",
+      etiqueta: "Mañanera, evento o declaración",
+      pie: "Conferencias, entrevistas y comparecencias.",
+      encargo:
+        "redacta la nota del evento o la declaración. Diferencia con claridad lo que el funcionario afirmó, lo que el medio interpretó y lo que se agrega como contexto.",
+      plantilla: `### Plantilla de evento o declaración
+
+- Apertura: "El día de ayer se llevó a cabo [evento] encabezado por [autoridad]…" o "En entrevista con [medio]…".
+- Línea de transición: "**Principales mensajes:**" o "**Mensajes principales del evento:**".
+- Sub-viñetas por orador, con nombre y cargo en negritas en la primera mención.
+- Encabezados temáticos con punto: **Inflación y tasas.** **Comercio exterior e inversión.** **Déficit público.** **Pemex.** **Plan México.**
+- Citas textuales entre comillas dobles tipográficas, en cursivas y atribuidas al funcionario. Verbos de atribución sobrios: señaló, destacó, mencionó, precisó, subrayó, añadió. Nada de "arremetió", "celebró" ni "advirtió" salvo que el tono de la fuente lo justifique.`,
+    },
+    {
+      id: "medios",
+      etiqueta: "Cobertura de medios",
+      pie: "Cuando la fuente es un periódico que reporta a un tercero.",
+      encargo:
+        "redacta la nota conservando la cadena de atribución. No conviertas una cobertura periodística en comunicado oficial.",
+      plantilla: `### Plantilla de cobertura de medios
+
+- Fórmula de atribución: "En una nota publicada por [medio], que reporta [documento o declaración] de [actor], se señaló que…".
+- Si la fuente original está bajo suscripción o no es pública, dilo: "…que reporta un documento de [fuente original] disponible bajo suscripción…".
+- Separa en el texto lo que dijo el actor original de lo que publicó el medio.
+- Si detectas que la fuente primaria sí es pública, dímelo: la nota debería nacer de ella y no del medio.`,
+    },
+  ];
+
+  /**
+   * Reglas de redacción para el prompt. Condensadas de la guía de redacción
+   * vigente; los marcadores {{AREA}} y {{LECTOR}} se rellenan al construir el
+   * prompt para que la versión pública pueda neutralizarlos.
+   */
+  const GUIA_PROMPT = `## Cómo debe quedar la nota
+
+### Principios que mandan sobre todo lo demás
+
+1. **Fidelidad estricta a la fuente.** Reproduce el sentido del original con mínimos parafraseos. Conserva las palabras, categorías y frases técnicas de la fuente. Preserva los calificadores de probabilidad y horizonte ("podría", "prevé", "en los próximos 12 a 24 meses", "si se materializa"). Nunca conviertas una posibilidad en certeza, una expectativa en hecho ni un riesgo en resultado.
+2. **No editorialices.** Sin adjetivos que no estén en la fuente, sin interpretaciones ni juicios propios. El valor está en ordenar y condensar, no en reinterpretar.
+3. **Atribuye todo juicio o proyección.** "La calificadora prevé que…", "de acuerdo con la SHCP…", "en opinión de S&P…". Nunca "prevemos" ni una afirmación sin dueño.
+4. **Cadena de atribución.** Si un medio reporta un documento de un tercero, distingue lo que dijo el tercero de lo que publicó el medio. Si el documento original está bajo suscripción, dilo: "en una nota publicada por [medio], que reporta un documento de [fuente] disponible bajo suscripción…".
+
+### Estructura del documento
+
+- Encabezado: **{{AREA}}** y la fecha en formato "5 de febrero de 2026", sin cero inicial.
+- Dos secciones fijas, siempre presentes: **Noticias relevantes sobre el sector financiero:** y **Noticias relevantes sobre el sector público:**
+- Si una sección queda vacía, escribe exactamente: *No hay noticias que reportar.* Sin variantes.
+- La numeración se reinicia dentro de cada sección.
+- Orden dentro de cada sección, de mayor a menor relevancia: (1) acciones de calificación, decisiones de política o cambios regulatorios; (2) cifras oficiales de alta relevancia; (3) comunicados de autoridades, organismos internacionales o empresas públicas; (4) eventos y declaraciones; (5) coberturas de medios; (6) operaciones de mercado o notas breves.
+
+### Anatomía de cada nota
+
+**Capa 1 — línea de apertura**, completa en negritas:
+"**Únicamente para tu información (Fuente). [Qué pasó, quién lo hizo y la magnitud o sentido.]**"
+Punto después de la fuente, no dos puntos. El hecho principal va en la primera oración. Verbo en pretérito o presente de indicativo. Si la nota es delicada, el matiz central va desde la apertura.
+
+**Capa 2 — cuerpo**, cuando la nota lo amerite, con la línea de transición "**Mensajes principales del comunicado:**" (o "del evento" / "Principales mensajes:") y sub-viñetas con encabezado en negritas y punto. Encabezados recurrentes: **Fundamentos de la calificación.** **Justificación de la perspectiva.** **Consolidación fiscal y deuda.** **Postura fiscal.** **Pemex.** **CFE.** **Inversión y crecimiento.** **Balance de riesgos.** **Implicaciones fiscales.** **Contexto.**
+
+**Capa 3 — sub-detalles y contexto.** Prosa bajo cada encabezado. Al cierre, si procede: "*Como contexto, …*". El contexto ubica la nota en una secuencia previa; no introduce conclusiones nuevas.
+
+### Modalidad: no subas la intensidad
+
+could/may → podría, nunca "hará". likely → probablemente, nunca "con certeza". expects → espera o prevé, nunca "asegura". downside risk → riesgo a la baja, nunca "deterioro confirmado". negative outlook → perspectiva negativa, nunca "reducción inminente". pressure on the rating → presión sobre la calificación, nunca "rebaja automática".
+
+### Traducciones fijas
+
+baseline credit assessment (BCA) → calificación base · standalone credit profile → perfil crediticio individual · investment grade → grado de inversión · outlook → perspectiva · downgrade/upgrade → reducción/aumento de la calificación (evita "degradación") · affirm → reafirmar o confirmar · fiscal consolidation → consolidación fiscal (no "ajuste fiscal") · debt burden → carga de la deuda · debt affordability → asequibilidad de la deuda · policy effectiveness → eficacia de la política · contingent liabilities → pasivos contingentes · rule of law → estado de derecho · nearshoring → *nearshoring*, en cursiva.
+
+### Cifras
+
+Punto decimal y coma de miles: 3.9%, 304,400 millones de pesos. Abreviaturas: m.m.p. (miles de millones de pesos), m.d.d. (millones de dólares), m.m.d. (miles de millones de dólares), v.r.a. (variación real anual), p.p. (puntos porcentuales). Nunca "406.8 miles de millones de dólares": es "406.8 m.m.d.". Usa **puntos del PIB** para razones respecto al PIB y **puntos porcentuales** para tasas; jamás "puntos porcentuales del PIB". Fechas sin cero inicial: "5 de febrero". Usa "Ayer 20 de mayo…" para lo del día previo; evita "recientemente".
+
+### Tipografía
+
+Negritas solo en la línea de apertura completa y, dentro del cuerpo, en conceptos ancla (cifras clave, instrumentos, decisiones). Cursiva para términos en inglés y títulos de reportes. Comillas dobles tipográficas para citas textuales; comillas simples para términos cualitativos asignados por una calificadora ('muy fuerte', 'insostenible'). Guion corto para rangos y siglas (2026-2030, BBB-). **No uses raya larga ni semirraya**: usa punto, coma, paréntesis o reescribe. Acrónimos en mayúsculas y sin puntos: SHCP, INEGI, ISR, IVA, IEPS, T-MEC, PIB, RFSP, SHRFSP.
+
+### Prohibiciones de estilo
+
+Nada de: "Adicionalmente", "En este sentido", "Es importante destacar que", "lo cual se traduce en", "en aras de", "a efectos de", "en el marco de", "dicho/referido/el citado", "mismo" como pronombre. Evita gerundios al inicio de oración y nominalizaciones ("la realización de" → "realizar"). "Cabe destacar que", "si bien" y "por otro lado": máximo una vez cada uno por nota.
+
+### Tono
+
+Profesional y sobrio, no académico ni rimbombante. Sintaxis española, no calcada del inglés. Oración corta antes que subordinada larga. Si una frase se puede acortar sin perder información, acórtala. Si una oración lleva tres comas, pártela.
+
+### Materialidad
+
+Amerita nota: acción de calificación o cambio de perspectiva; cambio regulatorio, fiscal o de política con implicación macroeconómica; cifra oficial relevante; operación de deuda o mercado con monto relevante; comunicado de autoridad, organismo internacional o empresa pública con implicación económica; declaración con posible efecto en expectativas; cobertura de medio serio que aporte información nueva. La materialidad se mide por relevancia para {{LECTOR}}, no por volumen mediático.
+
+### Qué quiero de vuelta
+
+1. Para cada fuente con material suficiente, una propuesta de nota completa con sus tres capas.
+2. Para las que no lo tengan, una línea que diga qué falta.
+3. Al final, una recomendación breve de en qué sección va cada nota y en qué orden.
+4. Marca con claridad cualquier punto donde hayas tenido que inferir algo. Si no puedes sostener una afirmación con la fuente, no la escribas.
+
+### Antes de entregar, verifica
+
+Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones vacías con "No hay noticias que reportar." · numeración reiniciada por sección · cada nota abre con "Únicamente para tu información (Fuente)." y punto, no dos puntos · apertura completa en negritas · juicios y proyecciones atribuidos · sin raya larga · sin las muletillas prohibidas · punto decimal y coma de miles · m.d.d. y m.m.d. bien usados · "puntos del PIB" frente a "puntos porcentuales" · términos en inglés en cursiva · traducciones consensuadas aplicadas · citas textuales entrecomilladas y atribuidas.`;
+
+  /**
+   * ¿Esta fuente puede leerla un modelo de lenguaje por su cuenta?
+   * Devuelve el motivo y qué hay que adjuntar, o null si es de acceso libre.
+   */
+  function materialFaltante(record) {
+    if (!isLink(record)) {
+      return { motivo: "es un recordatorio interno, no una página", pedir: "el documento correspondiente" };
+    }
+    if (record.access === "Suscripción") {
+      return { motivo: "está tras muro de pago", pedir: "el texto de la nota" };
+    }
+    if (record.domain === "youtube.com") {
+      return { motivo: "es video", pedir: "la versión estenográfica o la transcripción" };
+    }
+    if (dominiosCerrados.some((dominio) => (record.domain ?? "").endsWith(dominio))) {
+      return { motivo: "el sitio rechaza lectores automáticos (responde 403)", pedir: "el comunicado completo" };
+    }
+    if (record.access === "Registro") {
+      return { motivo: "pide usuario y contraseña", pedir: "el comunicado completo" };
+    }
+    return null;
+  }
+
+  function closingBlocked() {
+    return closingCandidates()
+      .map((record) => ({ record, falta: materialFaltante(record) }))
+      .filter((item) => item.falta);
+  }
+
+  /**
+   * Prompt listo para pegar en Claude, ChatGPT o Gemini.
+   *
+   * Deliberadamente NO se ejecuta aquí: hacerlo exigiría una llave de API dentro
+   * de una página pública, y además media ronda bloquea la lectura automática.
+   * El prompt le dice al modelo qué material tiene que pedir antes de redactar.
+   */
+  function promptText(variantId = promptVariant) {
+    const variante = PROMPTS.find((item) => item.id === variantId) ?? PROMPTS[0];
+    const candidatas = closingCandidates();
+    const bloqueadas = closingBlocked();
+    const abiertas = candidatas.filter((record) => !materialFaltante(record));
+    const general = (logStore[today]?.general ?? "").trim();
+    const L = [];
+
+    L.push(`Actúa como analista del área de ${notaContexto.area}. A partir de las fuentes que te doy abajo, ${variante.encargo} Redacta con las convenciones que se detallan al final; son obligatorias.`);
+    L.push("");
+    L.push(`Fecha de la revisión: ${formatDateLong(today)}.`);
+    L.push("");
+
+    L.push(`## 1. Fuentes seleccionadas hoy (${candidatas.length})`);
+    L.push("");
+    if (candidatas.length) {
+      candidatas.forEach((record, index) => {
+        const nota = todayNote(record.url).trim();
+        L.push(`${index + 1}. ${record.name}`);
+        if (isLink(record)) L.push(`   ${record.url}`);
+        if (nota) L.push(`   Qué se observó al revisarla: ${nota}`);
+      });
+    } else {
+      L.push("(Ninguna. Marca fuentes como candidatas durante la ronda para que aparezcan aquí.)");
+    }
+    L.push("");
+
+    if (bloqueadas.length) {
+      L.push("## 2. Material que tengo que darte (no vas a poder abrirlo tú)");
+      L.push("");
+      bloqueadas.forEach(({ record, falta }) => {
+        L.push(`- **${record.name}** — ${falta.motivo}. Necesitas que te pegue ${falta.pedir}.`);
+      });
+      L.push("");
+      L.push("Regla estricta: no redactes, resumas ni infieras nada sobre estas fuentes hasta que yo te haya pegado el material. Si falta algo, dímelo y detente ahí. Prefiero una nota incompleta a una nota inventada.");
+      L.push("");
+      if (abiertas.length) {
+        L.push(
+          abiertas.length === 1
+            ? `De las ${candidatas.length} fuentes, 1 sí es de acceso abierto y puedes consultarla por tu cuenta si tienes navegación disponible. Aun así, avísame si pudiste abrirla.`
+            : `De las ${candidatas.length} fuentes, ${abiertas.length} sí son de acceso abierto y puedes consultarlas por tu cuenta si tienes navegación disponible. Aun así, avísame cuáles pudiste abrir y cuáles no.`,
+        );
+      } else {
+        L.push("Ninguna de las fuentes de hoy es de lectura automática: espera mi material antes de escribir.");
+      }
+      L.push("");
+    } else if (candidatas.length) {
+      L.push("## 2. Acceso a las fuentes");
+      L.push("");
+      L.push("Todas las fuentes de hoy son de acceso abierto. Si no puedes abrir alguna, dímelo en vez de suponer su contenido.");
+      L.push("");
+    }
+
+    if (general) {
+      L.push("## 3. Valoración de quien hizo la revisión");
+      L.push("");
+      L.push(general);
+      L.push("");
+    }
+
+    if (variante.plantilla) {
+      L.push(variante.plantilla);
+      L.push("");
+    }
+
+    L.push(GUIA_PROMPT.replaceAll("{{LECTOR}}", notaContexto.lector).replaceAll("{{AREA}}", notaContexto.area));
+    return L.join("\n").trim();
+  }
+
+  function closingText() {
+    const candidatas = closingCandidates();
+    const otras = closingOtherNotes();
+    const turno = typeof guardiaDe === "function" ? guardiaDe(today) : null;
+    const done = roundSteps.filter((record) => checked.has(record.url)).length;
+    const general = (logStore[today]?.general ?? "").trim();
+
+    const lineas = [`# Cierre del día · ${formatDateLong(today)}`];
+    if (turno?.actual) lineas.push(`Guardia: ${turno.actual}${turno.cambiada ? " (cambio registrado)" : ""}`);
+    lineas.push(`Ronda: ${done} de ${roundSteps.length} revisados · ${candidatas.length} candidata(s)`);
+    lineas.push("");
+
+    if (candidatas.length) {
+      lineas.push("## Candidatas para la nota", "");
+      candidatas.forEach((record, index) => {
+        const outcome = outcomeFor(record.url);
+        const nota = todayNote(record.url).trim();
+        lineas.push(`${index + 1}. ${record.name}${outcome.reported ? " — ✓ entró en la nota final" : ""}`);
+        if (isLink(record)) lineas.push(`   ${record.url}`);
+        if (nota) lineas.push(`   Nota: ${nota}`);
+        lineas.push("");
+      });
+    } else {
+      lineas.push("## Candidatas para la nota", "", "Sin candidatas hoy.", "");
+    }
+
+    if (otras.length) {
+      lineas.push("## Otros apuntes del día", "");
+      otras.forEach(({ record, url, text }) => {
+        lineas.push(`- ${record?.name ?? url}: ${text.trim()}`);
+      });
+      lineas.push("");
+    }
+
+    if (general) lineas.push("## Valoración general", "", general, "");
+    return lineas.join("\n").trim();
+  }
+
+  function renderClosing() {
+    const candidatas = closingCandidates();
+    const otras = closingOtherNotes();
+    const done = roundSteps.filter((record) => checked.has(record.url)).length;
+    const reportadas = candidatas.filter((record) => outcomeFor(record.url).reported).length;
+
+    elements.closeScoreboard.textContent =
+      `${done} de ${roundSteps.length} revisados · ${candidatas.length} candidata(s)` +
+      (reportadas ? ` · ${reportadas} ya en la nota final` : "");
+    elements.closeGeneral.value = logStore[today]?.general ?? "";
+
+    const bloques = [];
+    bloques.push(
+      candidatas.length
+        ? `<div class="close-group"><h3>Candidatas para la nota</h3>${candidatas
+            .map((record, index) => {
+              const outcome = outcomeFor(record.url);
+              const nota = todayNote(record.url).trim();
+              return `
+                <article class="close-item">
+                  <span class="close-index">${index + 1}</span>
+                  <div>
+                    <h4>${escapeHtml(record.name)}</h4>
+                    ${isLink(record) ? `<a href="${escapeHtml(record.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(record.url)}</a>` : '<span class="close-nolink">Recordatorio sin enlace</span>'}
+                    ${nota ? `<p>${escapeHtml(nota)}</p>` : '<p class="close-nonote">Sin apunte. Añádelo desde el botón Nota de la ficha.</p>'}
+                    ${outcome.reported ? '<span class="outcome-badge reported">✓ Entró en la nota final</span>' : ""}
+                  </div>
+                </article>`;
+            })
+            .join("")}</div>`
+        : `<div class="panel-empty"><p>Todavía no marcaste ninguna fuente como candidata. Usa el botón <strong>Candidata</strong> de la barra superior o de cada ficha mientras haces la ronda.</p></div>`,
+    );
+
+    if (otras.length) {
+      bloques.push(
+        `<div class="close-group"><h3>Otros apuntes del día</h3>${otras
+          .map(
+            ({ record, url, text }) => `
+              <article class="close-item close-item-plain">
+                <div>
+                  <h4>${escapeHtml(record?.name ?? url)}</h4>
+                  <p>${escapeHtml(text.trim())}</p>
+                </div>
+              </article>`,
+          )
+          .join("")}</div>`,
+      );
+    }
+
+    elements.closeList.innerHTML = bloques.join("");
+    renderPromptBlock();
+  }
+
+  function renderPromptBlock() {
+    const variante = PROMPTS.find((item) => item.id === promptVariant) ?? PROMPTS[0];
+    elements.promptVariants.innerHTML = PROMPTS.map(
+      (item) =>
+        `<button type="button" data-variant="${item.id}" class="${item.id === promptVariant ? "active" : ""}" aria-pressed="${item.id === promptVariant}">${escapeHtml(item.etiqueta)}</button>`,
+    ).join("");
+    elements.promptHint.textContent = variante.pie;
+
+    const bloqueadas = closingBlocked();
+    if (bloqueadas.length) {
+      elements.promptWarning.hidden = false;
+      elements.promptWarning.innerHTML = `
+        <strong>Junto con el prompt tendrás que pegarle el material de ${bloqueadas.length} fuente(s):</strong>
+        <ul>${bloqueadas
+          .map(({ record, falta }) => `<li><strong>${escapeHtml(record.name)}</strong> — ${escapeHtml(falta.motivo)}. Pega ${escapeHtml(falta.pedir)}.</li>`)
+          .join("")}</ul>
+        <p>El prompt ya se lo advierte y le pide detenerse en vez de suponer.</p>`;
+    } else {
+      elements.promptWarning.hidden = true;
+      elements.promptWarning.innerHTML = "";
+    }
+
+    if (!elements.promptText.hidden) elements.promptText.value = promptText();
+  }
+
+  function openClosing() {
+    renderClosing();
+    elements.closeDialog.showModal();
+  }
+
   /* ---------- Calendario de guardias ---------- */
 
   const swapStore = readStorage(storageKeys.swaps, {});
@@ -13987,6 +15108,23 @@ window.FP_DATA = [
     elements.openNext.disabled = !next;
     elements.roundOpenNext.disabled = !next;
     renderStepList();
+
+    // Si aún no se ha tocado nada, el navegador arranca en el primer pendiente.
+    if (!interacted && next) {
+      const index = roundSteps.findIndex((record) => record.url === next.url);
+      if (index >= 0) currentStep = index;
+    }
+    renderStepNav();
+
+    const completa = total > 0 && done === total;
+    elements.roundComplete.hidden = !completa;
+    if (completa) {
+      const candidatas = closingCandidates().length;
+      elements.roundCompleteDetail.textContent = candidatas
+        ? `Revisaste los ${total} pasos y marcaste ${candidatas} fuente(s) como candidata.`
+        : `Revisaste los ${total} pasos. No marcaste ninguna fuente como candidata.`;
+    }
+    if (elements.closeDialog.open) renderClosing();
   }
 
   /**
@@ -13995,6 +15133,7 @@ window.FP_DATA = [
    * El re-render se aplaza un tick para no interrumpir la apertura de la pestaña.
    */
   function markChecked(record) {
+    trackOpened(record);
     if (checked.has(record.url)) return;
     checked.add(record.url);
     persistChecked();
@@ -14683,6 +15822,28 @@ window.FP_DATA = [
     showToast(`Exportadas ${formatCount(rows.length)} incidencias.`);
   }
 
+  /**
+   * Abre el cliente de correo con el texto ya redactado.
+   * mailto tiene un límite práctico de longitud, así que cuando el resumen es
+   * largo se copia completo al portapapeles y el correo lleva solo la cabecera.
+   */
+  async function enviarPorCorreo(texto, asunto) {
+    if (!texto || !texto.trim()) {
+      showToast("No hay nada que enviar todavía.");
+      return;
+    }
+    const codificado = encodeURIComponent(texto);
+    if (codificado.length <= 1800) {
+      window.location.href = `mailto:${contactoIncidencias}?subject=${encodeURIComponent(asunto)}&body=${codificado}`;
+      return;
+    }
+    await copyText(texto, "El resumen es largo: quedó copiado completo. Pégalo en el correo que se acaba de abrir.");
+    const aviso = encodeURIComponent(
+      `${texto.split("\n").slice(0, 3).join("\n")}\n\n(El resumen completo quedó copiado en el portapapeles: pégalo aquí.)`,
+    );
+    window.location.href = `mailto:${contactoIncidencias}?subject=${encodeURIComponent(asunto)}&body=${aviso}`;
+  }
+
   async function copyText(value, message) {
     try {
       await navigator.clipboard.writeText(value);
@@ -15090,6 +16251,85 @@ window.FP_DATA = [
       }
     });
 
+    /* navegador de pasos */
+    elements.stepNavPrev.addEventListener("click", () => setCurrentStep(currentStep - 1, { scroll: true }));
+    elements.stepNavNext.addEventListener("click", () => setCurrentStep(currentStep + 1, { scroll: true }));
+    elements.stepNavOpen.addEventListener("click", () => {
+      const record = currentRecord();
+      if (record) markChecked(record);
+    });
+    elements.stepNavCandidate.addEventListener("click", () => {
+      const record = currentRecord();
+      if (!record) return;
+      const outcome = outcomeFor(record.url);
+      setOutcome(record.url, { candidate: !outcome.candidate });
+      renderStepNav();
+      showToast(outcome.candidate ? "Ya no es candidata." : "Marcada como candidata para la nota.");
+    });
+    elements.stepNavNote.addEventListener("click", () => {
+      const record = currentRecord();
+      if (record) openDetail(record);
+    });
+    elements.stepList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-id]");
+      const id = button?.dataset.id;
+      if (!id) return;
+      const found = roundSteps.find((item) => item.id === id);
+      if (found) focusStepFor(found);
+    });
+
+    /* cierre del día */
+    elements.roundCloseDay.addEventListener("click", openClosing);
+    elements.roundCompleteClose.addEventListener("click", openClosing);
+    elements.closeGeneral.addEventListener("input", () => {
+      const entry = dayLog(today);
+      entry.general = elements.closeGeneral.value;
+      persistLog();
+      if (elements.logGeneral) elements.logGeneral.value = entry.general;
+    });
+    elements.closeCopy.addEventListener("click", () => {
+      copyText(closingText(), "Cierre del día copiado.");
+    });
+    elements.closeExport.addEventListener("click", () => {
+      downloadFile(`cierre-${today}.md`, closingText(), "text/markdown;charset=utf-8");
+    });
+    elements.closeEmail.addEventListener("click", () => enviarPorCorreo(closingText(), `Cierre del día · ${today}`));
+
+    /* prompt */
+    elements.promptVariants.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-variant]");
+      if (!button) return;
+      promptVariant = button.dataset.variant;
+      renderPromptBlock();
+    });
+    elements.promptCopy.addEventListener("click", () => {
+      copyText(promptText(), "Prompt copiado. Pégalo en tu IA y adjunta el material que te pida.");
+    });
+    elements.promptPreview.addEventListener("click", () => {
+      const mostrar = elements.promptText.hidden;
+      elements.promptText.hidden = !mostrar;
+      elements.promptPreview.textContent = mostrar ? "Ocultar el prompt" : "Ver el prompt";
+      if (mostrar) elements.promptText.value = promptText();
+    });
+    elements.promptDownload.addEventListener("click", () => {
+      downloadFile(`prompt-${promptVariant}-${today}.md`, promptText(), "text/markdown;charset=utf-8");
+    });
+    document.querySelectorAll("[data-ia]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        // Se copia primero y se abre después: los chats no aceptan un prompt
+        // tan largo en la URL, así que pegarlo a mano es lo único fiable.
+        await copyText(promptText(), `Prompt copiado. Se abrió ${button.textContent.trim()}: pégalo ahí.`);
+        window.open(button.dataset.ia, "_blank", "noopener,noreferrer");
+      });
+    });
+
+    /* ayuda */
+    elements.helpButton.addEventListener("click", () => openHelp());
+    elements.helpTabs.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-help]");
+      if (button) openHelp(button.dataset.help);
+    });
+
     /* incidencias */
     elements.reportForm.addEventListener("submit", saveReport);
     elements.reportsButton.addEventListener("click", () => {
@@ -15112,9 +16352,7 @@ window.FP_DATA = [
         showToast("No hay incidencias pendientes que enviar.");
         return;
       }
-      const asunto = encodeURIComponent(`Enlaces con problema · Directorio de fuentes · ${today}`);
-      const cuerpo = encodeURIComponent(text);
-      window.location.href = `mailto:${contactoIncidencias}?subject=${asunto}&body=${cuerpo}`;
+      enviarPorCorreo(text, `Enlaces con problema · Directorio de fuentes · ${today}`);
     });
     elements.reportsList.addEventListener("click", (event) => {
       const button = event.target.closest("[data-report-action]");
