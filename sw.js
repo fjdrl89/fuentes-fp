@@ -8,7 +8,7 @@
  *
  * Sube CACHE_VERSION cuando publiques cambios para desalojar lo anterior.
  */
-const CACHE_VERSION = "fuentes-fp-v1";
+const CACHE_VERSION = "fuentes-fp-v2";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icono-192.png", "./icono-512.png"];
 
 self.addEventListener("install", (event) => {

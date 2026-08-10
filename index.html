@@ -23,7 +23,11 @@
   --gold-soft: #fbeecb;
   --paper: #f4f4f1;
   --paper-dark: #e7e8e3;
-  --white: #ffffff;
+  --white: #ffffff;      /* blanco real: texto sobre fondos oscuros */
+  --muted: #56616e;      /* texto secundario: cumple 4.5:1 en todos los fondos claros */
+  --clay-text: #a0452d;  /* clay legible como texto (el clay puro se queda en bordes) */
+  --gold-text: #755609;  /* dorado legible como texto */
+  --surface: #ffffff;    /* superficie de tarjetas y controles */
   --clay: #b4543a;
   --clay-soft: #f8e2da;
   --green: #2f7a5b;
@@ -239,7 +243,7 @@ a {
 
 .button-outline:hover {
   border-color: var(--navy);
-  background: var(--white);
+  background: var(--surface);
 }
 
 .button-outline-light {
@@ -280,7 +284,8 @@ a {
 
 .hero {
   position: relative;
-  overflow: hidden;
+  /* Sin overflow oculto: el buscador se desplaza hacia abajo a propósito y
+     antes quedaba recortado por el borde inferior del hero. */
   border-radius: 0 0 40px 40px;
   background: var(--navy);
   color: var(--white);
@@ -289,6 +294,7 @@ a {
 .hero::before {
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 38px 38px;
@@ -538,7 +544,7 @@ kbd {
 
 .quick-filters > span {
   margin-right: 4px;
-  color: #7d858c;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 700;
 }
@@ -608,7 +614,7 @@ kbd {
 .text-button {
   border: 0;
   background: transparent;
-  color: var(--clay);
+  color: var(--clay-text);
   padding: 4px;
   font-size: 12px;
   font-weight: 800;
@@ -637,7 +643,7 @@ kbd {
   width: 100%;
   border: 1px solid #ccd2cd;
   border-radius: 11px;
-  background: var(--white);
+  background: var(--surface);
   padding: 10px 32px 10px 11px;
   font-size: 13px;
 }
@@ -664,7 +670,7 @@ kbd {
 
 .check-list label {
   justify-content: space-between;
-  color: #46505c;
+  color: var(--muted);
   font-size: 13px;
 }
 
@@ -686,7 +692,7 @@ kbd {
   min-width: 28px;
   border-radius: 999px;
   background: #e8eae6;
-  color: #6d7680;
+  color: var(--muted);
   padding: 2px 6px;
   text-align: center;
   font-size: 10px;
@@ -770,7 +776,7 @@ kbd {
 .sort-control select {
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--white);
+  background: var(--surface);
   padding: 8px 26px 8px 9px;
   font-size: 12px;
 }
@@ -780,7 +786,7 @@ kbd {
   height: 38px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--white);
+  background: var(--surface);
   color: var(--navy);
   font-size: 17px;
   font-weight: 800;
@@ -799,11 +805,11 @@ kbd {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: #757e87;
+  color: var(--muted);
 }
 
 .view-switch button.active {
-  background: var(--white);
+  background: var(--surface);
   box-shadow: 0 2px 7px rgba(19, 26, 36, 0.13);
   color: var(--navy);
 }
@@ -821,7 +827,7 @@ kbd {
   gap: 7px;
   border: 1px solid #c9d0ca;
   border-radius: 999px;
-  background: var(--white);
+  background: var(--surface);
   padding: 5px 9px 5px 11px;
   color: var(--navy);
   font-size: 11px;
@@ -927,24 +933,24 @@ kbd {
 
 .priority-critica {
   background: var(--clay-soft);
-  border-color: #edc4b6;
-  color: #8f3f28;
+  border-color: var(--critica-line, #edc4b6);
+  color: var(--clay-text);
 }
 
 .priority-alta {
   background: var(--gold-soft);
-  border-color: #ecd9a4;
-  color: #8a6410;
+  border-color: var(--alta-line, #ecd9a4);
+  color: var(--gold-text);
 }
 
 .priority-media {
   background: #eceef0;
-  color: #5b6773;
+  color: var(--muted);
 }
 
 .priority-baja {
   background: #f2f3f2;
-  color: #7e878f;
+  color: var(--muted);
 }
 
 .step-pill {
@@ -966,8 +972,8 @@ kbd {
   flex: 0 0 auto;
   border: 1px solid #e0e3dd;
   border-radius: 10px;
-  background: var(--white);
-  color: #97a0a8;
+  background: var(--surface);
+  color: var(--muted);
   font-size: 16px;
   line-height: 1;
   padding: 0;
@@ -1027,14 +1033,14 @@ kbd {
 .meta-pill,
 .detail-pill {
   background: #edeeec;
-  color: #626c76;
+  color: var(--muted);
   padding: 5px 7px;
 }
 
 .topic-pill {
   border: 1px solid #dfe3de;
   background: transparent;
-  color: #6f7880;
+  color: var(--muted);
   padding: 4px 7px;
   font-weight: 700;
 }
@@ -1069,7 +1075,7 @@ kbd {
   gap: 7px;
   border-top: 1px solid #ecefea;
   padding: 11px 0 10px;
-  color: #79828a;
+  color: var(--muted);
   font-size: 11px;
 }
 
@@ -1256,7 +1262,7 @@ dialog::backdrop {
 .report-dialog {
   width: min(720px, calc(100vw - 32px));
   border-radius: 22px;
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--shadow);
   padding: 26px;
 }
@@ -1312,7 +1318,7 @@ dialog::backdrop {
   margin: 17px 0 0;
   border: 1px solid #dee2dc;
   border-radius: 12px;
-  background: var(--white);
+  background: var(--surface);
   padding: 11px 13px;
   color: var(--steel);
   font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
@@ -1350,7 +1356,7 @@ dialog::backdrop {
   width: 100%;
   border: 1px solid #d3d8d2;
   border-radius: 11px;
-  background: var(--white);
+  background: var(--surface);
   padding: 10px 12px;
   font-size: 13px;
   resize: vertical;
@@ -1415,7 +1421,7 @@ dialog::backdrop {
   gap: 12px;
   border: 1px solid #dfe3dd;
   border-radius: 10px;
-  background: var(--white);
+  background: var(--surface);
   padding: 10px 12px;
   text-align: left;
 }
@@ -1449,7 +1455,7 @@ dialog::backdrop {
   width: 100%;
   border: 1px solid #ced4ce;
   border-radius: 11px;
-  background: var(--white);
+  background: var(--surface);
   padding: 11px 12px;
 }
 
@@ -1793,7 +1799,7 @@ dialog::backdrop {
     margin-bottom: 16px;
     border: 1px solid #ccd2cc;
     border-radius: 12px;
-    background: var(--white);
+    background: var(--surface);
     padding: 11px;
     font-weight: 800;
   }
@@ -2034,7 +2040,7 @@ dialog::backdrop {
 /* Recordatorios internos: ocupan el lugar del botón de abrir, sin ser enlace. */
 .open-link.no-link {
   background: #e9ebe7;
-  color: #7d868e;
+  color: var(--muted);
   cursor: default;
 }
 
@@ -2052,7 +2058,7 @@ dialog::backdrop {
 
 .outcome-badge.candidate {
   background: var(--gold-soft);
-  color: #8a6410;
+  color: var(--gold-text);
 }
 
 .outcome-badge.reported {
@@ -2138,7 +2144,7 @@ dialog::backdrop {
 .view-tabs button > span {
   display: block;
   margin-top: 2px;
-  color: #7d868e;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
 }
@@ -2233,7 +2239,7 @@ dialog::backdrop {
   height: 44px;
   border: 1px solid #ccd3cd;
   border-radius: 12px;
-  background: var(--white);
+  background: var(--surface);
   padding: 0;
   font-variant-numeric: tabular-nums;
 }
@@ -2307,11 +2313,11 @@ dialog::backdrop {
 
 .meta-pill.warn {
   background: var(--gold-soft);
-  color: #8a6410;
+  color: var(--gold-text);
 }
 
 .step-domain {
-  color: #8a939b;
+  color: var(--muted);
   font-size: 11px;
 }
 
@@ -2389,7 +2395,7 @@ dialog::backdrop {
   gap: 6px;
   border: 1px solid #d9ded9;
   border-radius: 999px;
-  background: var(--white);
+  background: var(--surface);
   padding: 7px 13px;
   color: var(--ink);
   font-size: 12.5px;
@@ -2411,7 +2417,7 @@ dialog::backdrop {
   place-content: center;
   border-radius: 50%;
   background: #eceee9;
-  color: #7d868e;
+  color: var(--muted);
   font-size: 10px;
   font-style: normal;
   font-weight: 800;
@@ -2419,7 +2425,7 @@ dialog::backdrop {
 
 .news-link.paywall em {
   background: var(--clay-soft);
-  color: #92402a;
+  color: var(--clay-text);
 }
 
 @media (max-width: 860px) {
@@ -2502,7 +2508,7 @@ dialog::backdrop {
   gap: 6px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--white);
+  background: var(--surface);
   padding: 5px 11px;
   color: var(--ink-soft);
   font-size: 12px;
@@ -2700,10 +2706,13 @@ dialog::backdrop {
   --steel: #8aa0b8;
   --paper: #0d151d;
   --paper-dark: #16212c;
-  --white: #17212c;
+  --surface: #17212c;
   --line: #26333f;
   --gold-soft: #33290f;
   --clay-soft: #3b241c;
+  --muted: #a3b0be;
+  --clay-text: #e5947a;
+  --gold-text: #edcb87;
   --green-soft: #143126;
   --shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
 }
@@ -2752,7 +2761,7 @@ dialog::backdrop {
 [data-theme="dark"] .report-dialog textarea,
 [data-theme="dark"] .detail-note textarea {
   border-color: #2b3846;
-  background: var(--white);
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -2838,6 +2847,32 @@ dialog::backdrop {
   border-top-color: var(--line);
 }
 
+/* Correcciones de contraste en modo oscuro: los azules y bordes pensados
+   para fondo claro quedaban casi invisibles sobre el fondo oscuro. */
+[data-theme="dark"] {
+  --critica-line: #7a4230;
+  --alta-line: #6b5721;
+}
+
+[data-theme="dark"] .step-number,
+[data-theme="dark"] .view-switch button.active {
+  color: #8ab8ee;
+}
+
+[data-theme="dark"] .news-link em {
+  background: #24303d;
+  color: var(--muted);
+}
+
+[data-theme="dark"] .priority-media {
+  background: #202b36;
+  color: var(--muted);
+}
+
+[data-theme="dark"] .icon-toggle {
+  border-color: #2b3846;
+}
+
 /* ---------- Calendario de guardias ---------- */
 
 .calendar-view {
@@ -2897,7 +2932,7 @@ dialog::backdrop {
 .person-chips button {
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--white);
+  background: var(--surface);
   padding: 5px 13px;
   color: var(--ink-soft);
   font-size: 12px;
@@ -2923,7 +2958,7 @@ dialog::backdrop {
 .mine-picker select {
   border: 1px solid var(--line);
   border-radius: 9px;
-  background: var(--white);
+  background: var(--surface);
   padding: 6px 9px;
   font-size: 12px;
 }
@@ -2932,7 +2967,7 @@ dialog::backdrop {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: var(--white);
+  background: var(--surface);
 }
 
 .calendar-row {
@@ -3057,7 +3092,7 @@ dialog::backdrop {
 .swap-row select {
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--white);
+  background: var(--surface);
   padding: 8px 10px;
   font-size: 13px;
 }
@@ -3078,7 +3113,7 @@ dialog::backdrop {
   gap: 9px;
   border: 1px solid var(--line);
   border-radius: 11px;
-  background: var(--white);
+  background: var(--surface);
   padding: 9px 12px;
   font-size: 12.5px;
 }
@@ -3122,7 +3157,7 @@ dialog::backdrop {
 [data-theme="dark"] .swap-row input,
 [data-theme="dark"] .swap-row select {
   border-color: #2b3846;
-  background: var(--white);
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -3170,38 +3205,7 @@ dialog::backdrop {
   }
 }
 
-/* En modo oscuro, --white pasa a ser un color de superficie. Donde se usaba como
-   color de TEXTO sobre fondos oscuros hay que devolverle el contraste, o el
-   texto desaparece. */
-[data-theme="dark"] .site-header,
-[data-theme="dark"] .hero,
-[data-theme="dark"] .hero-stats strong,
-[data-theme="dark"] .panel-dialog,
-[data-theme="dark"] .stats-grid strong,
-[data-theme="dark"] .button-primary,
-[data-theme="dark"] .button-light,
-[data-theme="dark"] .open-link,
-[data-theme="dark"] .view-tabs button.active strong,
-[data-theme="dark"] .person-chips button.active,
-[data-theme="dark"] .block-row button em,
-[data-theme="dark"] .calendar-header div,
-[data-theme="dark"] .calendar-swap,
-[data-theme="dark"] .step.done .step-tick,
-[data-theme="dark"] .mobile-filter-button span:last-child,
-[data-theme="dark"] .toast,
-[data-theme="dark"] .skip-link {
-  color: #eef3fa;
-}
 
-[data-theme="dark"] .button-light,
-[data-theme="dark"] .skip-link {
-  background: var(--gold);
-  color: #14202b;
-}
-
-[data-theme="dark"] .view-tabs button.active span {
-  color: var(--gold);
-}
 
     </style>
 

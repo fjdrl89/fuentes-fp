@@ -23,7 +23,7 @@ públicas de México. Funciona en computadora y en celular, sin instalar nada.
 De esas, **340 son de acceso abierto**, 14 piden registro y 11 son de suscripción.
 Cada ficha dice qué buscar en esa fuente, su prioridad, su tipo de acceso y sus temas.
 
-## El sitio tiene dos vistas
+## El sitio tiene tres vistas
 
 **Ronda del día** es lo que ves al entrar: los 25 sitios del recorrido fijo, en orden,
 uno debajo de otro. Cada paso tiene su número, qué buscar ahí, un botón *Abrir* y la
@@ -32,6 +32,9 @@ del recorrido pero se consulta casi a diario.
 
 **Catálogo completo** son las 365 fuentes con todos los filtros. Sirve para complementar
 una nota o como referencia, no para el seguimiento diario.
+
+**Calendario** muestra el rol de guardias del mes, con filtro por iniciales y registro
+de cambios de guardia entre dos personas.
 
 **Al abrir, se marca solo.** Cada vez que abres un paso queda registrado como revisado y
 el contador salta al siguiente. **Abrir siguiente** hace ambas cosas de un clic;
@@ -48,13 +51,16 @@ tema, acceso, región e idioma. Los atajos de arriba son los filtros más usados
 *Ronda fija*, *Prioridad crítica*, *Pendientes de hoy*, *Calificadoras*,
 *Datos y estadística*, *Sin suscripción*.
 
-**Marcar o desmarcar.** Abrir un paso ya lo marca; la casilla ✓ sirve para corregir a mano.
+**Avanzar a tu ritmo.** Además de recorrer los 25 pasos seguidos, puedes hacerlo
+**por bloques** (tandas más cortas) y **ocultar los ya revisados** para que la portada
+solo muestre lo que falta.
 
 **Anotar hallazgos y su destino.** El botón *Nota* guarda lo que encontraste. Además
 hay dos casillas: **Candidata para la nota** y **Entró en la nota final**. Desde
-**Bitácora** ves el marcador del día, escribes la valoración general y exportas en
-Markdown. El botón **Exportar dataset** baja un CSV con todas las fechas y esas dos
-etiquetas, para analizar qué se propone y qué termina reportándose.
+**Bitácora** ves el marcador del día, las estadísticas de rachas y de cuántas notas
+entraron, escribes la valoración general y exportas en Markdown. El botón
+**Exportar dataset** baja un CSV con todas las fechas y esas dos etiquetas, para
+analizar qué se propone y qué termina reportándose.
 
 **Abrir varias a la vez.** En la ronda, *Abrir pendientes* abre todos los que falten;
 en el catálogo, *Abrir en pestañas* abre hasta 12 de los resultados filtrados.
@@ -67,6 +73,10 @@ La primera vez hay que permitir las ventanas emergentes del sitio.
 **Exportar.** El botón ↓ baja los resultados filtrados en CSV, con todos sus campos.
 
 **Favoritos.** La estrella guarda una fuente y el botón ★ del encabezado las filtra.
+
+**Modo oscuro e instalación.** El botón ☾ del encabezado cambia el tema y recuerda tu
+elección. Desde el navegador puedes instalar el sitio como app, con icono propio,
+sin barra de direcciones y con acceso aunque falle la conexión.
 
 ## Lo que hay que saber
 
@@ -81,3 +91,6 @@ pantalla principal y queda como una app.
 
 **Los enlaces apuntan a listados, no a documentos fechados**, así que siempre
 muestran lo más reciente del día en que los abras.
+
+**Los enlaces se revisan solos cada lunes.** Una comprobación automática abre un aviso
+en GitHub si alguna dirección dejó de funcionar.
