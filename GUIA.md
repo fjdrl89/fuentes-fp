@@ -36,9 +36,12 @@ una nota o como referencia, no para el seguimiento diario.
 **Calendario** muestra el rol de guardias del mes, con filtro por iniciales y registro
 de cambios de guardia entre dos personas.
 
-**Una barra fija te dice en qué paso vas.** Se queda pegada arriba mientras recorres la
-ronda, con ‹ y › para moverte, el botón *Abrir* y el de *Candidata* a un clic. Sirve sobre
-todo cuando abres los sitios en pestañas y pierdes el hilo de dónde ibas.
+**La barra de la ronda tiene tres bloques** y está a la vista desde que entras, sin
+hacer scroll: **la última revisada** —con su botón de *Candidata* y el de *Nota*, para
+decidir en el momento en que vuelves de la pestaña—, **cuál sigue** con su botón
+*Abrir siguiente*, y **cuántas candidatas llevas**, que abre el cierre del día en
+cualquier momento. Cuando bajas y la tarjeta se va de la pantalla, esa misma barra se
+queda pegada al borde superior.
 
 **Al abrir, se marca solo.** Cada vez que abres un paso queda registrado como revisado y
 el contador salta al siguiente. **Abrir siguiente** hace ambas cosas de un clic;

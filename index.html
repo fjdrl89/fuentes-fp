@@ -3209,71 +3209,215 @@ dialog::backdrop {
 
 
 
-/* ---------- Navegador de pasos, cierre del día, prompt y ayuda ---------- */
+/* ---------- Barra de la ronda, cierre del día, prompt y ayuda ---------- */
 
-/* La barra se queda pegada arriba para que siempre sepas en qué paso vas.
-   Ningún ancestro puede llevar overflow oculto o el sticky deja de funcionar. */
-.step-nav {
-  position: sticky;
-  top: 10px;
-  z-index: 6;
-  display: flex;
+/* ---------- Barra de la ronda: última revisada · siguiente · candidatas ----------
+   El eje es lo que ACABAS de revisar, porque ese es el momento en que decides si
+   la marcas. Vive en la tarjeta de arriba y se repite en una franja fija que
+   aparece cuando esa tarjeta se va de la pantalla. */
+
+.round-strip {
+  display: grid;
   align-items: center;
-  gap: 12px;
-  margin: 0 0 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  box-shadow: 0 10px 30px rgba(11, 30, 51, 0.12);
-  padding: 10px 12px;
+  gap: 14px 16px;
+  margin: 15px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: 14px;
 }
 
-.step-nav.done {
-  border-color: var(--green);
+/* Dentro de la tarjeta no caben tres columnas sin cortar los nombres:
+   la última revisada ocupa su propia fila y abajo van siguiente y contador. */
+.round-strip-dark {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
-.step-nav-body {
-  flex: 1 1 auto;
+.round-strip-dark .strip-prev {
+  grid-column: 1 / -1;
+}
+
+/* La franja fija sí es ancha: ahí caben los tres bloques en línea. */
+.sticky-strip .round-strip {
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+}
+
+.strip-block {
   min-width: 0;
 }
 
-.step-nav-label {
+.strip-label {
   display: block;
-  color: var(--muted);
-  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 10.5px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
-.step-nav-body strong {
+.strip-block strong {
   display: block;
   overflow: hidden;
-  font-size: 15px;
-  letter-spacing: -0.01em;
+  margin-top: 3px;
+  color: var(--white);
+  font-size: 13.5px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.step-nav-actions {
+.strip-prev strong {
+  cursor: pointer;
+}
+
+.strip-prev strong:hover {
+  text-decoration: underline;
+}
+
+.strip-actions {
   display: flex;
-  flex: 0 0 auto;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 6px;
+  margin-top: 7px;
 }
 
-.step-nav-actions .active {
-  border-color: var(--green-text);
-  background: var(--green-soft);
-  color: var(--green-text);
+.button-tiny {
+  padding: 4px 9px;
+  font-size: 11px;
 }
 
-.step-nav button:disabled {
+.strip-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 7px 13px;
+  color: var(--white);
+  line-height: 1.15;
+}
+
+.strip-chip strong {
+  margin: 0;
+  color: var(--gold);
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+
+.strip-chip span {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.strip-chip:hover {
+  border-color: var(--gold);
+}
+
+.strip-chip.empty strong {
+  /* Atenuado, pero sin bajar de 4.5:1: en celular el número deja de contar
+     como texto grande y necesita el contraste completo. */
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.round-strip .active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+
+/* ---- la copia fija, sobre fondo claro ---- */
+
+.sticky-strip {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(11, 30, 51, 0.1);
+}
+
+.sticky-strip .round-strip {
+  width: min(1240px, calc(100% - 48px));
+  margin: 0 auto;
+  border-top: 0;
+  padding: 9px 0;
+}
+
+.sticky-strip .strip-actions {
+  margin-top: 5px;
+}
+
+.sticky-strip .strip-label {
+  color: var(--muted);
+}
+
+.sticky-strip .strip-block strong {
+  color: var(--ink);
+}
+
+.sticky-strip .strip-chip {
+  border-color: var(--line);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.sticky-strip .strip-chip strong {
+  color: var(--gold-text);
+}
+
+.sticky-strip .strip-chip span {
+  color: var(--muted);
+}
+
+.sticky-strip .button-outline-light {
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+
+.sticky-strip .button-outline-light:hover:not(:disabled) {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.sticky-strip .round-strip .active {
+  border-color: var(--gold-text);
+  background: var(--gold-soft);
+  color: var(--gold-text);
+}
+
+.round-strip button:disabled {
   cursor: default;
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
-.step.current {
+@media (max-width: 860px) {
+  .round-strip,
+  .sticky-strip .round-strip {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 11px 12px;
+  }
+
+  .strip-prev {
+    grid-column: 1 / -1;
+  }
+
+  .sticky-strip .round-strip {
+    width: calc(100% - 28px);
+    padding: 9px 0;
+  }
+
+  .strip-chip {
+    padding: 6px 10px;
+  }
+
+  .strip-chip strong {
+    font-size: 16px;
+  }
+}
+
+.step.last-reviewed {
   border-color: var(--navy);
   box-shadow: 0 0 0 2px rgba(20, 48, 79, 0.12);
 }
@@ -3573,20 +3717,6 @@ dialog::backdrop {
 }
 
 @media (max-width: 860px) {
-  .step-nav {
-    flex-wrap: wrap;
-    top: 6px;
-  }
-
-  .step-nav-body {
-    order: -1;
-    flex-basis: 100%;
-  }
-
-  .step-nav-actions {
-    flex: 1 1 auto;
-  }
-
   .prompt-open-label {
     flex-basis: 100%;
     margin-left: 0;
@@ -3646,6 +3776,10 @@ dialog::backdrop {
       </div>
     </header>
 
+    <div class="sticky-strip" id="stickyStrip" hidden>
+      <div class="round-strip" id="stickyStripInner"></div>
+    </div>
+
     <main>
       <section class="hero" id="inicio" aria-labelledby="heroTitle">
         <div class="hero-inner">
@@ -3690,14 +3824,32 @@ dialog::backdrop {
               </p>
 
               <div class="round-card-actions">
-                <button class="button button-light button-small" id="openNext" type="button">Abrir siguiente</button>
                 <button class="button button-outline-light button-small" id="openRoundPanel" type="button">Ver la ronda</button>
               </div>
 
-              <p class="round-next">
-                Siguiente pendiente
-                <strong id="nextStepName">—</strong>
-              </p>
+              <div class="round-strip round-strip-dark" id="roundStrip">
+                <div class="strip-block strip-prev">
+                  <span class="strip-label">Última revisada</span>
+                  <strong id="prevStepName" data-strip-action="goto">Aún ninguna</strong>
+                  <div class="strip-actions">
+                    <button class="button button-outline-light button-tiny" id="prevCandidate" data-strip-action="candidate" type="button" aria-pressed="false" disabled>◔ Candidata</button>
+                    <button class="button button-outline-light button-tiny" id="prevNote" data-strip-action="note" type="button" disabled>Nota</button>
+                  </div>
+                </div>
+                <div class="strip-block strip-next">
+                  <span class="strip-label">Siguiente pendiente</span>
+                  <strong id="nextStepName">—</strong>
+                  <div class="strip-actions">
+                    <button class="button button-light button-tiny" id="openNext" data-strip-action="opennext" type="button">Abrir siguiente ↗</button>
+                  </div>
+                </div>
+                <div class="strip-block strip-count">
+                  <button class="strip-chip" id="candidateChip" data-strip-action="chip" type="button">
+                    <strong id="candidateCount">0</strong>
+                    <span>candidatas · ver</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -3812,22 +3964,6 @@ dialog::backdrop {
             <input type="checkbox" id="hideDoneMain" />
             <span>Ocultar los revisados</span>
           </label>
-        </div>
-
-        <!-- Barra fija: dice en qué paso vas sin tener que buscarlo en la lista.
-             El botón de candidata es la MISMA etiqueta de la ficha, solo que a un clic. -->
-        <div class="step-nav" id="stepNav" aria-label="Paso actual de la ronda">
-          <button class="icon-button" id="stepNavPrev" type="button" aria-label="Paso anterior">‹</button>
-          <div class="step-nav-body">
-            <span class="step-nav-label" id="stepNavLabel">Paso — de —</span>
-            <strong id="stepNavName">—</strong>
-          </div>
-          <div class="step-nav-actions">
-            <a class="button button-primary button-small" id="stepNavOpen" href="#" target="_blank" rel="noopener noreferrer">Abrir ↗</a>
-            <button class="button button-outline button-small" id="stepNavCandidate" type="button" aria-pressed="false">◔ Candidata</button>
-            <button class="button button-outline button-small" id="stepNavNote" type="button">Nota</button>
-          </div>
-          <button class="icon-button" id="stepNavNext" type="button" aria-label="Paso siguiente">›</button>
         </div>
 
         <ol class="step-list" id="stepList"></ol>
@@ -13575,14 +13711,15 @@ window.FP_DATA = [
     blockRow: $("#blockRow"),
     hideDoneMain: $("#hideDoneMain"),
     stepEmpty: $("#stepEmpty"),
-    stepNav: $("#stepNav"),
-    stepNavPrev: $("#stepNavPrev"),
-    stepNavNext: $("#stepNavNext"),
-    stepNavLabel: $("#stepNavLabel"),
-    stepNavName: $("#stepNavName"),
-    stepNavOpen: $("#stepNavOpen"),
-    stepNavCandidate: $("#stepNavCandidate"),
-    stepNavNote: $("#stepNavNote"),
+    roundStrip: $("#roundStrip"),
+    stickyStrip: $("#stickyStrip"),
+    stickyStripInner: $("#stickyStripInner"),
+    prevStepName: $("#prevStepName"),
+    prevCandidate: $("#prevCandidate"),
+    prevNote: $("#prevNote"),
+    candidateChip: $("#candidateChip"),
+    candidateCount: $("#candidateCount"),
+    roundCard: document.querySelector(".round-card"),
     roundComplete: $("#roundComplete"),
     roundCompleteDetail: $("#roundCompleteDetail"),
     roundCompleteClose: $("#roundCompleteClose"),
@@ -14212,79 +14349,105 @@ window.FP_DATA = [
     return roundSteps.filter((record) => !checked.has(record.url));
   }
 
-  /* ---------- navegador de pasos ---------- */
+  /* ---------- barra de la ronda ---------- */
 
   /**
-   * Paso en el que va la persona. Arranca en el primer pendiente y se mueve solo
-   * al abrir una fuente, de modo que la barra siempre refleje dónde estás.
+   * La barra responde a la pregunta real de quien hace la guardia:
+   * "acabo de volver de una pestaña, ¿qué revisé y merece ser candidata?".
+   * Por eso el eje es la ÚLTIMA revisada, no el paso en que va el cursor.
+   *
+   * Vive en dos lugares con el mismo contenido: dentro de la tarjeta de arriba,
+   * visible al entrar, y en una franja fija que aparece cuando esa tarjeta se
+   * va de la pantalla. Las dos se pintan desde aquí para que no se desincronicen.
    */
-  let currentStep = 0;
-  /** Mientras nadie se mueva a mano, la barra sigue al primer pendiente. */
-  let interacted = false;
+  let lastReviewed = null;
 
-  function currentRecord() {
-    return roundSteps[currentStep] ?? null;
+  function markReviewed(record) {
+    if (Number.isFinite(record.roundOrder)) lastReviewed = record.url;
   }
 
-  function setCurrentStep(index, { scroll = false } = {}) {
-    if (!roundSteps.length) return;
-    interacted = true;
-    currentStep = Math.min(Math.max(index, 0), roundSteps.length - 1);
-    renderStepNav();
-    if (!scroll) return;
-    const record = currentRecord();
-    const node = record && elements.stepList.querySelector(`[data-id="${record.id}"]`);
+  function lastReviewedRecord() {
+    if (lastReviewed && checked.has(lastReviewed)) return recordsByUrl.get(lastReviewed) ?? null;
+    // Al recargar la página se recupera la última del recorrido que esté marcada.
+    const marcadas = roundSteps.filter((record) => checked.has(record.url));
+    return marcadas.length ? marcadas[marcadas.length - 1] : null;
+  }
+
+  function scrollToStep(record) {
+    const node = elements.stepList.querySelector(`[data-id="${record.id}"]`);
     const li = node?.closest("li.step");
     if (li) li.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
-  function focusStepFor(record) {
-    const index = roundSteps.findIndex((item) => item.url === record.url);
-    if (index >= 0) setCurrentStep(index);
-  }
-
-  /** Al abrir una fuente la barra se mueve a ella: refleja dónde vas de verdad. */
-  function trackOpened(record) {
-    if (Number.isFinite(record.roundOrder)) focusStepFor(record);
-  }
-
-  function renderStepNav() {
-    if (!elements.stepNav) return;
-    const record = currentRecord();
-    if (!record) {
-      elements.stepNav.hidden = true;
+  function toggleCandidate(record) {
+    const outcome = outcomeFor(record.url);
+    if (outcome.reported) {
+      showToast("Ya está marcada como que entró en la nota final. Se cambia desde la ficha.");
       return;
     }
-    elements.stepNav.hidden = false;
-    elements.stepNavLabel.textContent = `Paso ${record.roundOrder} de ${roundSteps.length}`;
-    elements.stepNavName.textContent = record.name;
-    elements.stepNav.classList.toggle("done", checked.has(record.url));
-    elements.stepNavPrev.disabled = currentStep === 0;
-    elements.stepNavNext.disabled = currentStep === roundSteps.length - 1;
+    setOutcome(record.url, { candidate: !outcome.candidate });
+    render();
+    showToast(outcome.candidate ? "Ya no es candidata." : "Marcada como candidata para la nota.");
+  }
 
-    const linkable = isLink(record);
-    elements.stepNavOpen.hidden = !linkable;
-    if (linkable) elements.stepNavOpen.href = record.url;
+  function renderRoundStrip() {
+    const previa = lastReviewedRecord();
+    const siguiente = pendingSteps()[0];
+    const candidatas = closingCandidates().length;
 
-    const outcome = outcomeFor(record.url);
-    const activa = outcome.candidate || outcome.reported;
-    elements.stepNavCandidate.setAttribute("aria-pressed", String(activa));
-    elements.stepNavCandidate.classList.toggle("active", activa);
-    elements.stepNavCandidate.textContent = outcome.reported
-      ? "✓ Entró en la nota"
-      : outcome.candidate
-        ? "✓ Candidata"
-        : "◔ Candidata";
-    // Marcar como reportada es decisión posterior; desde aquí solo se alterna candidata.
-    elements.stepNavCandidate.disabled = outcome.reported;
-    elements.stepNavCandidate.title = outcome.reported
-      ? "Ya está marcada como que entró en la nota final. Se cambia desde la ficha."
-      : "Marca esta fuente como candidata para la nota de hoy";
+    // --- bloque 1: la última revisada, con su botón de candidata ---
+    elements.prevStepName.textContent = previa ? `${previa.roundOrder}. ${previa.name}` : "Aún ninguna";
+    elements.prevCandidate.disabled = !previa;
+    elements.prevNote.disabled = !previa;
+    if (previa) {
+      const outcome = outcomeFor(previa.url);
+      const activa = outcome.candidate || outcome.reported;
+      elements.prevCandidate.textContent = outcome.reported
+        ? "✓ Entró en la nota"
+        : outcome.candidate
+          ? "✓ Candidata"
+          : "◔ Candidata";
+      elements.prevCandidate.classList.toggle("active", activa);
+      elements.prevCandidate.setAttribute("aria-pressed", String(activa));
+      elements.prevNote.textContent = todayNote(previa.url) ? "Ver nota" : "Nota";
+    } else {
+      elements.prevCandidate.textContent = "◔ Candidata";
+      elements.prevCandidate.classList.remove("active");
+      elements.prevCandidate.setAttribute("aria-pressed", "false");
+      elements.prevNote.textContent = "Nota";
+    }
 
-    // El paso actual se resalta en la lista.
-    elements.stepList.querySelectorAll("li.step.current").forEach((li) => li.classList.remove("current"));
-    const node = elements.stepList.querySelector(`[data-id="${record.id}"]`);
-    node?.closest("li.step")?.classList.add("current");
+    // --- bloque 2: qué sigue ---
+    elements.nextStepName.textContent = siguiente
+      ? `${siguiente.roundOrder}. ${siguiente.name}`
+      : "Ronda completa por hoy";
+
+    // --- bloque 3: cuántas candidatas llevas (y cómo verlas ya) ---
+    elements.candidateCount.textContent = formatCount(candidatas);
+    elements.candidateChip.classList.toggle("empty", candidatas === 0);
+    elements.candidateChip.setAttribute(
+      "aria-label",
+      candidatas === 1 ? "1 candidata. Ver el cierre del día" : `${candidatas} candidatas. Ver el cierre del día`,
+    );
+
+    // La copia fija replica el contenido. Se le quitan los id para no duplicarlos
+    // en el documento; los clics se resuelven por data-strip-action en ambas.
+    if (elements.stickyStripInner) {
+      elements.stickyStripInner.innerHTML = elements.roundStrip.innerHTML.replace(/\sid="[^"]*"/g, "");
+    }
+  }
+
+  /** La franja fija solo aparece cuando la tarjeta de la ronda ya no se ve. */
+  function watchRoundCard() {
+    if (!elements.roundCard || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const fuera = !entry.isIntersecting;
+        elements.stickyStrip.hidden = !(fuera && mainView === "round");
+      },
+      { rootMargin: "-8px 0px 0px 0px", threshold: 0 },
+    );
+    observer.observe(elements.roundCard);
   }
 
   /* ---------- cierre del día ---------- */
@@ -14983,6 +15146,8 @@ Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones va
   /** Categoría que alimenta el bloque de noticias de la portada. */
   const newsCategory = "Periódicos y medios";
 
+  let mainView = "round";
+
   function setMainView(view) {
     const views = {
       round: [elements.roundView, elements.viewRound],
@@ -14997,6 +15162,9 @@ Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones va
       tab.classList.toggle("active", active);
       tab.setAttribute("aria-pressed", String(active));
     });
+    mainView = target;
+    // Fuera de la ronda la franja fija no tiene sentido.
+    if (target !== "round") elements.stickyStrip.hidden = true;
     if (target === "calendar") renderCalendar();
   }
 
@@ -15104,17 +15272,10 @@ Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones va
     elements.progressBar.setAttribute("aria-valuenow", String(percent));
 
     const next = pendingSteps()[0];
-    elements.nextStepName.textContent = next ? `${next.roundOrder}. ${next.name}` : "Ronda completa por hoy";
     elements.openNext.disabled = !next;
     elements.roundOpenNext.disabled = !next;
     renderStepList();
-
-    // Si aún no se ha tocado nada, el navegador arranca en el primer pendiente.
-    if (!interacted && next) {
-      const index = roundSteps.findIndex((record) => record.url === next.url);
-      if (index >= 0) currentStep = index;
-    }
-    renderStepNav();
+    renderRoundStrip();
 
     const completa = total > 0 && done === total;
     elements.roundComplete.hidden = !completa;
@@ -15133,7 +15294,7 @@ Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones va
    * El re-render se aplaza un tick para no interrumpir la apertura de la pestaña.
    */
   function markChecked(record) {
-    trackOpened(record);
+    markReviewed(record);
     if (checked.has(record.url)) return;
     checked.add(record.url);
     persistChecked();
@@ -15146,8 +15307,10 @@ Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones va
   function toggleChecked(record) {
     if (checked.has(record.url)) {
       checked.delete(record.url);
+      if (lastReviewed === record.url) lastReviewed = null;
     } else {
       checked.add(record.url);
+      markReviewed(record);
     }
     persistChecked();
     render();
@@ -16251,32 +16414,24 @@ Encabezado y fecha sin cero inicial · ambas secciones presentes · secciones va
       }
     });
 
-    /* navegador de pasos */
-    elements.stepNavPrev.addEventListener("click", () => setCurrentStep(currentStep - 1, { scroll: true }));
-    elements.stepNavNext.addEventListener("click", () => setCurrentStep(currentStep + 1, { scroll: true }));
-    elements.stepNavOpen.addEventListener("click", () => {
-      const record = currentRecord();
-      if (record) markChecked(record);
+    /* barra de la ronda: la de arriba y su copia fija comparten manejador */
+    [elements.roundStrip, elements.stickyStripInner].forEach((contenedor) => {
+      if (!contenedor) return;
+      contenedor.addEventListener("click", (event) => {
+        const destino = event.target.closest("[data-strip-action]");
+        if (!destino || destino.disabled) return;
+        const previa = lastReviewedRecord();
+        const accion = destino.dataset.stripAction;
+        if (accion === "chip") return openClosing();
+        // La copia fija no conserva el id, así que aquí se reenvía al botón real.
+        if (accion === "opennext") return destino.id ? undefined : elements.openNext.click();
+        if (!previa) return;
+        if (accion === "candidate") toggleCandidate(previa);
+        if (accion === "note") openDetail(previa);
+        if (accion === "goto") scrollToStep(previa);   // el nombre lleva a su ficha
+      });
     });
-    elements.stepNavCandidate.addEventListener("click", () => {
-      const record = currentRecord();
-      if (!record) return;
-      const outcome = outcomeFor(record.url);
-      setOutcome(record.url, { candidate: !outcome.candidate });
-      renderStepNav();
-      showToast(outcome.candidate ? "Ya no es candidata." : "Marcada como candidata para la nota.");
-    });
-    elements.stepNavNote.addEventListener("click", () => {
-      const record = currentRecord();
-      if (record) openDetail(record);
-    });
-    elements.stepList.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-id]");
-      const id = button?.dataset.id;
-      if (!id) return;
-      const found = roundSteps.find((item) => item.id === id);
-      if (found) focusStepFor(found);
-    });
+    watchRoundCard();
 
     /* cierre del día */
     elements.roundCloseDay.addEventListener("click", openClosing);
